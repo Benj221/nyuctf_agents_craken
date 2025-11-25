@@ -11,6 +11,10 @@ agent:
   model:
     name: "gpt-4o-2024-11-20"
     temperature: 1
+    local:
+      base_url: "http://localhost:8080/v1"
+      models: ["glm4-air", "qwen-abliterated", "qwen-expert", "qwen-fast", "qwen-rag"]
+      temperature: 0.7
   call_retriever: ["delegation"]
 
 retrieval:
