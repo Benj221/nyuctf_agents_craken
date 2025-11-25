@@ -194,14 +194,33 @@ class GeminiBackend(LLMBackend):
         super().__init__(model, config)
         self.llm = ChatGoogleGenerativeAI(model=model, 
                                 temperature=self.config["temperature"])
+
+class LocalBackend(LLMBackend):
+    NAME = "local"
+    MODELS = {}
+    def __init__(self, model, config: dict):
+        super().__init__(model, config)
+        self.llm = ChatOpenAI(model=model,
+                              temperature=self.config["temperature"],
+                              base_url=self.config["base_url"],
+                              api_key="dummy")
         
-BACKENDS = [OpenAIBackend, TogetherBackend, AnthropicBackend, GeminiBackend]
+BACKENDS = [OpenAIBackend, TogetherBackend, AnthropicBackend, GeminiBackend, LocalBackend]
 MODELS = {m: b for b in BACKENDS for m in b.MODELS}
 
 class LLMs:
     def __init__(self, model, config: dict):
         self.model_name = model
-        self.llm_backend: LLMBackend = MODELS[model](model, config)
+
+        if "local" in config and model in config["local"]["models"]:
+            local_config = {
+                "temperature": config["local"].get("temperature", config.get("temperature")),
+                "base_url": config["local"]["base_url"]
+            }
+            self.llm_backend: LLMBackend = LocalBackend(model, local_config)
+        else:
+            self.llm_backend: LLMBackend = MODELS[model](model, config)
+
         self.model_cost = 0.0
         self.search_cost = 0.0
 
