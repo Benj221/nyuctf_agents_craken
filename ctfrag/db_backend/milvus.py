@@ -12,7 +12,7 @@ FILE_PATH = Path(__file__).resolve()
 class MilvusDB(BaseVectorDB):
     def __init__(self, embeddings, use_server=False) -> None:
         super().__init__(embeddings=embeddings)
-        self.host = "0.0.0.0"
+        self.host = "192.168.1.157"
         self.port = "19530"
         self.use_server = use_server
         self.url = FILE_PATH.parent / "db" / "ctfrag.db"

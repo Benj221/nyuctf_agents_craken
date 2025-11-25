@@ -20,7 +20,24 @@ GEMINI= # Google Gemini API Key
 GOOGLE_SEARCH= # used for google search (not enabled)
 GOOGLE_CSE= # used for google search (not enabled)
 ```
-### 3. Install packages
+Note: If you are using a local LLM, you do not need to provide any API keys.
+
+### 3. Using a Local LLM
+To use a local, OpenAI-compatible LLM, you need to add a `local` section to your `config/rag_config.yaml` file. This section should include the `base_url` of your local LLM server and a list of the `models` that are available.
+
+Here is an example of the `local` section:
+```yaml
+agent:
+  model:
+    name: "glm4-air"
+    temperature: 1
+    local:
+      base_url: "http://localhost:8080/v1"
+      models: ["glm4-air", "qwen-abliterated", "qwen-expert", "qwen-fast", "qwen-rag"]
+      temperature: 0.7
+```
+
+### 4. Install packages
 Install nyuctf_multiagent and ctfrag package
 ```bash
 cd nyuctf_multiagent
