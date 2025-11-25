@@ -22,7 +22,7 @@ class RAGAgent:
 
     def _setup_db(self, db_storage):
         if db_storage == "milvus":
-            return MilvusDB(embeddings=self.embeddings)
+            return MilvusDB(embeddings=self.embeddings, use_server=True)
         elif db_storage == "neo4j":
             return Neo4jDB(embeddings=self.embeddings)
         else:
